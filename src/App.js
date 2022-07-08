@@ -11,6 +11,7 @@ const useInput = (initialValue) => {
 
     setValue(value);
   };
+  console.log("test");
 
   return { value, onChange };
 };
