@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./styles.css";
 
-const useInput = (initialValue) => {
+const useInput = (initialValue, validator) => {
   const [value, setValue] = useState(initialValue);
 
   const onChange = (event) => {
@@ -9,17 +9,18 @@ const useInput = (initialValue) => {
       target: { value }
     } = event;
 
-    setValue(value);
+    let willUpdate = true;
+
+    typeof validator === "function" && (willUpdate = validator(value));
+    willUpdate && setValue(value);
   };
-  console.log("test");
 
   return { value, onChange };
 };
 
 export default function App() {
-  const name = useInput("ANCHANIK");
-
-  console.log(name);
+  const maxLen = (value) => value.length <= 10;
+  const name = useInput("ANCHANIK", maxLen);
 
   return (
     <div className="App">
